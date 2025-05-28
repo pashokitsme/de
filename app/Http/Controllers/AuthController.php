@@ -6,26 +6,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    /**
-     * Show the login form.
-     *
-     * @return \Illuminate\View\View
-     */
+  
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle a login request to the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function login(Request $request)
     {
         $request->validate([
@@ -46,12 +35,6 @@ class AuthController extends Controller
         ])->withInput($request->except('password'));
     }
 
-    /**
-     * Log the user out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -62,22 +45,11 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Show the registration form.
-     *
-     * @return \Illuminate\View\View
-     */
     public function showRegistrationForm()
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function register(Request $request)
     {
         $request->validate([
@@ -93,7 +65,6 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-
         return redirect('home');
     }
 } 
