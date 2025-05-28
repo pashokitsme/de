@@ -18,7 +18,10 @@
                 <p class="card-text">Вы успешно вошли в систему. Теперь вы можете использовать все функции приложения.</p>
                 
                 <div class="mt-4">
-                    <form method="POST" action="{{ route('logout') }}">
+                    <a href="{{ route('cards.index') }}" class="btn btn-primary mb-3">Мои карточки</a>
+                    <a href="{{ route('cards.create') }}" class="btn btn-outline-primary mb-3 ms-2">Создать новую карточку</a>
+                    
+                    <form method="POST" action="{{ route('logout') }}" class="mt-3">
                         @csrf
                         <button type="submit" class="btn btn-danger">Выйти</button>
                     </form>

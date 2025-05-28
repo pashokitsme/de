@@ -54,7 +54,17 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
-                    
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('home') }}">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cards.index') }}">Мои карточки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cards.create') }}">Создать карточку</a>
+                        </li>
+                    @endauth
                 </ul>
 
                 <!-- Right Side Of Navbar -->
