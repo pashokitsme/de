@@ -70,6 +70,6 @@ class CardController extends Controller
             'rejection_reason' => 'Карточка удалена пользователем ' . Auth::user()->name
         ]);
 
-        return redirect()->route('cards.index')->with('success', 'Карточка успешно удалена.');
+        return back()->with('success', 'Карточка успешно удалена.');
     }
 } 
