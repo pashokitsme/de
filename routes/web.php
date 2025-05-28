@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,13 @@ Route::middleware(['auth'])->group(function () {
     // Карточки: управление статусом
     Route::post('/cards/{card}/approve', [CardController::class, 'approve'])->name('cards.approve');
     Route::post('/cards/{card}/reject', [CardController::class, 'reject'])->name('cards.reject');
+});
+
+// Admin Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Admin Card Management
+    Route::get('/cards', [AdminController::class, 'index'])->name('cards.index');
+    Route::get('/cards/pending', [AdminController::class, 'pending'])->name('cards.pending');
+    Route::post('/cards/{card}/approve', [AdminController::class, 'approve'])->name('cards.approve');
+    Route::post('/cards/{card}/reject', [AdminController::class, 'reject'])->name('cards.reject');
 });

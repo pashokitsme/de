@@ -120,17 +120,6 @@
                                         </div>
                                         <div class="card-footer bg-white">
                                             <div class="d-flex justify-content-between">
-                                                @if($card->status == 'pending')
-                                                    <div>
-                                                        <form action="{{ route('cards.approve', $card) }}" method="POST" class="d-inline">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-sm btn-success">Одобрить</button>
-                                                        </form>
-                                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $card->id }}">
-                                                            Отклонить
-                                                        </button>
-                                                    </div>
-                                                @endif
                                                 <form action="{{ route('cards.destroy', $card) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту карточку?');">
                                                     @csrf
                                                     @method('DELETE')
