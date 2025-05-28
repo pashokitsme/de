@@ -25,15 +25,6 @@ class AdminController extends Controller
     }
     
     /**
-     * Показывает карточки, ожидающие проверки
-     */
-    public function pending()
-    {
-        $cards = Card::with('user')->where('status', 'pending')->latest()->get();
-        return view('admin.pending', compact('cards'));
-    }
-    
-    /**
      * Одобряет карточку
      */
     public function approve(Card $card)

@@ -5,7 +5,6 @@
     <div class="col-md-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4>Админ-панель: Все карточки</h4>
-            <a href="{{ route('admin.cards.pending') }}" class="btn btn-warning">Ожидающие модерации</a>
         </div>
 
         @if(session('success'))
@@ -29,94 +28,109 @@
                 </div>
             </div>
         @else
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Название</th>
-                                    <th>Автор</th>
-                                    <th>Тип</th>
-                                    <th>Пользователь</th>
-                                    <th>Статус</th>
-                                    <th>Дата создания</th>
-                                    <th>Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($cards as $card)
-                                <tr>
-                                    <td>{{ $card->id }}</td>
-                                    <td>{{ $card->title }}</td>
-                                    <td>{{ $card->author }}</td>
-                                    <td>
-                                        @if($card->type == 'share')
-                                            <span class="badge bg-success">Отдам</span>
-                                        @else
-                                            <span class="badge bg-primary">Ищу</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $card->user->name }}</td>
-                                    <td>
-                                        @if($card->status == 'pending')
-                                            <span class="badge bg-warning">На рассмотрении</span>
-                                        @elseif($card->status == 'approved')
-                                            <span class="badge bg-success">Одобрено</span>
-                                        @else
-                                            <span class="badge bg-danger">Отклонено</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ $card->created_at->format('d.m.Y H:i') }}</td>
-                                    <td>
-                                        @if($card->status == 'pending')
-                                            <div class="d-flex gap-2">
-                                                <form action="{{ route('admin.cards.approve', $card) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success">Одобрить</button>
-                                                </form>
-                                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $card->id }}">
-                                                    Отклонить
-                                                </button>
-                                            </div>
-                                        @elseif($card->status == 'rejected')
-                                            <form action="{{ route('admin.cards.approve', $card) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-success">Восстановить</button>
-                                            </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                                
-                                <!-- Модальное окно для отклонения карточки -->
-                                <div class="modal fade" id="rejectModal{{ $card->id }}" tabindex="-1" aria-labelledby="rejectModalLabel{{ $card->id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="rejectModalLabel{{ $card->id }}">Отклонить карточку</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form action="{{ route('admin.cards.reject', $card) }}" method="POST">
-                                                @csrf
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label for="rejection_reason" class="form-label">Причина отклонения</label>
-                                                        <textarea class="form-control" id="rejection_reason" name="rejection_reason" rows="3" required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                                                    <button type="submit" class="btn btn-danger">Отклонить</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </tbody>
-                        </table>
+            <!-- Tabs for All, Pending, Approved and Rejected Cards -->
+            <ul class="nav nav-tabs mb-4" id="cardsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-cards" type="button" role="tab" aria-controls="all-cards" aria-selected="true">
+                        Все карточки
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending-cards" type="button" role="tab" aria-controls="pending-cards" aria-selected="false">
+                        На рассмотрении
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved-cards" type="button" role="tab" aria-controls="approved-cards" aria-selected="false">
+                        Одобренные
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected-cards" type="button" role="tab" aria-controls="rejected-cards" aria-selected="false">
+                        Отклоненные
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="cardsTabContent">
+                <!-- All Cards Tab -->
+                <div class="tab-pane fade show active" id="all-cards" role="tabpanel" aria-labelledby="all-tab">
+                    <div class="row">
+                        @foreach($cards as $card)
+                            <div class="col-md-4 mb-4">
+                                <x-card :card="$card" :isAdmin="true" />
+                            </div>
+                        @endforeach
                     </div>
+                </div>
+                
+                <!-- Pending Cards Tab -->
+                <div class="tab-pane fade" id="pending-cards" role="tabpanel" aria-labelledby="pending-tab">
+                    @php
+                        $pendingCards = $cards->filter(function($card) {
+                            return $card->status === 'pending';
+                        });
+                    @endphp
+                    
+                    @if($pendingCards->isEmpty())
+                        <div class="alert alert-info">
+                            Нет карточек, ожидающих модерации.
+                        </div>
+                    @else
+                        <div class="row">
+                            @foreach($pendingCards as $card)
+                                <div class="col-md-4 mb-4">
+                                    <x-card :card="$card" :isAdmin="true" />
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+                
+                <!-- Approved Cards Tab -->
+                <div class="tab-pane fade" id="approved-cards" role="tabpanel" aria-labelledby="approved-tab">
+                    @php
+                        $approvedCards = $cards->filter(function($card) {
+                            return $card->status === 'approved';
+                        });
+                    @endphp
+                    
+                    @if($approvedCards->isEmpty())
+                        <div class="alert alert-info">
+                            Нет одобренных карточек.
+                        </div>
+                    @else
+                        <div class="row">
+                            @foreach($approvedCards as $card)
+                                <div class="col-md-4 mb-4">
+                                    <x-card :card="$card" :isAdmin="true" />
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+                
+                <!-- Rejected Cards Tab -->
+                <div class="tab-pane fade" id="rejected-cards" role="tabpanel" aria-labelledby="rejected-tab">
+                    @php
+                        $rejectedCards = $cards->filter(function($card) {
+                            return $card->status === 'rejected';
+                        });
+                    @endphp
+                    
+                    @if($rejectedCards->isEmpty())
+                        <div class="alert alert-info">
+                            Нет отклоненных карточек.
+                        </div>
+                    @else
+                        <div class="row">
+                            @foreach($rejectedCards as $card)
+                                <div class="col-md-4 mb-4">
+                                    <x-card :card="$card" :isAdmin="true" />
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif
