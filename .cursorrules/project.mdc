@@ -1,0 +1,98 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Technical Specification: Book Exchange System
+
+## Tech Stack:
+- **Backend**: PHP Laravel
+- **Frontend**: Blade templates + minimal CSS
+- **Database**: MySQL
+
+## Database Schema:
+
+### Users Table:
+```
+- id (primary key)
+- login (unique, min 6 chars, cyrillic)
+- password (hashed, min 6 chars)
+- full_name (cyrillic with spaces)
+- phone (format: +7(XXX)-XXX-XX-XX)
+- email
+- created_at
+- updated_at
+```
+
+### Cards Table:
+```
+- id (primary key)
+- user_id (foreign key)
+- author
+- title
+- type (enum: 'share', 'want')
+- publisher (nullable)
+- year (nullable)
+- binding (enum: 'hard', 'soft', nullable)
+- condition (enum: 'perfect', 'normal', 'needs_attention', 'table_prop', nullable)
+- status (enum: 'pending', 'approved', 'rejected')
+- rejection_reason (nullable)
+- created_at
+- updated_at
+```
+
+## Routes:
+```
+- GET /register
+- POST /register
+- GET /login
+- POST /login
+- GET /logout
+- GET /cards
+- GET /cards/create
+- POST /cards
+- DELETE /cards/{id}
+- GET /admin
+- POST /admin/cards/{id}/approve
+- POST /admin/cards/{id}/reject
+```
+
+## Pages with UI Elements:
+
+1. **Registration Page**
+   - Form with validation messages
+   - All fields required with appropriate formats
+   - "Register" button
+
+2. **Login Page**
+   - Login/password fields
+   - Error messages for failed attempts
+   - "Login" button
+
+3. **User Cards Page**
+   - Two sections: active cards and archived cards
+   - Each card displays basic info
+   - Delete button on each card
+   - "Create New Card" button
+
+4. **Card Creation Page**
+   - Required fields (author, title)
+   - Radio buttons for "Share" or "Want"
+   - Optional fields with dropdowns for binding and condition
+   - "Submit" button to send for admin review
+
+5. **Admin Panel**
+   - Login with admin credentials
+   - Table view of all cards with pagination
+   - Filter options by status
+   - Approve/Reject buttons with rejection reason field
+   - Confirmation dialogs for actions
+
+## UI Design Principles:
+- Clean, minimalist layout
+- Consistent form styling
+- Clear validation messages
+- Responsive design
+- Simple color scheme
+
+This specification focuses on a streamlined Laravel implementation with minimal design requirements to meet the 1-hour development timeframe.
