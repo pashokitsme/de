@@ -78,34 +78,40 @@
             </div>
         @endif
     </div>
-    <div class="card-footer bg-white">
-        <div class="d-flex justify-content-between">
-            @if($isAdmin)
-              <div class="d-flex gap-2">
-                @if($card->status == 'pending')
-                    <form action="{{ route('admin.cards.approve', $card) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-success">Одобрить</button>
-                    </form>
-                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $card->id }}">
-                        Отклонить
-                    </button>
-                @endif
-                @if($card->status == 'rejected')
-                    <form action="{{ route('admin.cards.approve', $card) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-success">Восстановить</button>
-                    </form>
-                @endif
-              </div>
-            @endif
-                <form action="{{ route('cards.destroy', $card) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту карточку?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
-                </form>
-        </div>
-    </div>
+    
+    @if($isAdmin || $card->status != 'rejected')
+      <div class="card-footer bg-white">
+          <div class="d-flex justify-content-between">
+              @if($isAdmin)
+                <div class="d-flex gap-2">
+                  @if($card->status == 'pending')
+                      <form action="{{ route('admin.cards.approve', $card) }}" method="POST">
+                          @csrf
+                          <button type="submit" class="btn btn-sm btn-success">Одобрить</button>
+                      </form>
+                      <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ $card->id }}">
+                          Отклонить
+                      </button>
+                  @endif
+                  @if($card->status == 'rejected')
+                      <form action="{{ route('admin.cards.approve', $card) }}" method="POST" class="d-inline">
+                          @csrf
+                          <button type="submit" class="btn btn-sm btn-success">Восстановить</button>
+                      </form>
+                  @endif
+                </div>
+              @endif
+
+              @if($card->status != 'rejected')
+                  <form action="{{ route('cards.destroy', $card) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить эту карточку?');">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                  </form>
+              @endif
+          </div>
+      </div>
+    @endif
 </div>
 
 @if($card->status == 'pending' || $card->status == 'rejected')
