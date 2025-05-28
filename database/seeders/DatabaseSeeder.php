@@ -12,11 +12,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Запускаем сидеры
+        $this->call([
+            RolesTableSeeder::class,
+            PermissionsTableSeeder::class,
+        ]);
+        
+        // Создаем тестового администратора
+        \App\Models\User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+        ])->roles()->attach(1); // Привязываем роль администратора
+        
+        // Создаем тестового обычного пользователя
+        \App\Models\User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'user@example.com',
+            'password' => bcrypt('password'),
+        ])->roles()->attach(2); // Привязываем роль пользователя
     }
 }

@@ -41,4 +41,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    /**
+     * Получить профиль пользователя.
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+    
+    /**
+     * Роли, принадлежащие пользователю.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+    
+    /**
+     * Проверить, имеет ли пользователь указанную роль.
+     */
+    public function hasRole($role)
+    {
+        if (is_string($role)) {
+            return $this->roles->contains('name', $role);
+        }
+        
+        return !! $role->intersect($this->roles)->count();
+    }
 }
