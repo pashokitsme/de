@@ -45,8 +45,8 @@ class CardController extends Controller
             'type' => 'required|in:share,want',
             'publisher' => 'nullable|string|max:255',
             'year' => 'nullable|integer|min:1800|max:' . date('Y'),
-            'binding' => 'nullable|in:hard,soft',
-            'condition' => 'nullable|in:perfect,normal,needs_attention,table_prop',
+            'binding' => 'required|in:hard,soft',
+            'condition' => 'required|in:perfect,normal,needs_attention,table_prop',
         ]);
 
         $card = new Card($validated);

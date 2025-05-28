@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="year" class="form-label">Год издания</label>
+                        <label for="year" class="form-label">Год издания <span class="text-danger">*</span></label>
                         <input id="year" type="number" min="1800" max="{{ date('Y') }}" class="form-control @error('year') is-invalid @enderror" name="year" value="{{ old('year') }}">
                         @error('year')
                             <span class="invalid-feedback" role="alert">
@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="binding" class="form-label">Переплет</label>
+                        <label for="binding" class="form-label">Переплет <span class="text-danger">*</span></label>
                         <select id="binding" class="form-select @error('binding') is-invalid @enderror" name="binding">
                             <option value="">Выберите тип переплета</option>
                             <option value="hard" {{ old('binding') == 'hard' ? 'selected' : '' }}>Твердый</option>
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="condition" class="form-label">Состояние</label>
+                        <label for="condition" class="form-label">Состояние <span class="text-danger">*</span></label>
                         <select id="condition" class="form-select @error('condition') is-invalid @enderror" name="condition">
                             <option value="">Выберите состояние</option>
                             <option value="perfect" {{ old('condition') == 'perfect' ? 'selected' : '' }}>Отличное</option>
