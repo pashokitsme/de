@@ -31,6 +31,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'is_admin',
         'password',
         'remember_token',
     ];
@@ -45,21 +46,11 @@ class User extends Authenticatable
     ];
     
     /**
-     * Роли, принадлежащие пользователю.
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-    
-    /**
      * Проверить, имеет ли пользователь указанную роль.
      */
-    public function hasRole($role)
+    public function isAdmin()
     {
-        if (is_string($role)) 
-            return $this->roles->contains('name', $role);
-        return !!$role->intersect($this->roles)->count();
+      return $this->is_admin;
     }
 
     /**

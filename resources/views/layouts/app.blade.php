@@ -64,7 +64,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('cards.create') }}">Создать карточку</a>
                         </li>
-                        @if(Auth::user()->hasRole('admin'))
+                        @if(Auth::user()->isAdmin())
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.cards.index') }}">Админ панель</a>
                             </li>

@@ -15,7 +15,7 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->hasRole('admin')) {
+        if (!$request->user() || !$request->user()->isAdmin()) {
             return redirect()->route('home')->with('error', 'У вас нет доступа к этой странице');
         }
 

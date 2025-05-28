@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,24 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Запускаем сидеры
-        $this->call([
-            RolesTableSeeder::class,
-            PermissionsTableSeeder::class,
-        ]);
-        
-        // Создаем тестового администратора
-        \App\Models\User::factory()->create([
-            'name' => 'Admin User',
+        User::create([
+            'name' => 'admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-        ])->roles()->attach(1); // Привязываем роль администратора
-        
-        // Создаем тестового обычного пользователя
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'user@example.com',
-            'password' => bcrypt('password'),
-        ])->roles()->attach(2); // Привязываем роль пользователя
+            'password' => Hash::make('bookworm'),
+            'is_admin' => true,
+            'email_verified_at' => now(),
+            'phone' => '+7 (999) 999-99-99'
+        ]);
     }
 }
