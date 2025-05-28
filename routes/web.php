@@ -16,9 +16,6 @@ use App\Http\Controllers\CardController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
 
 // Authentication Routes
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -30,7 +27,8 @@ Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('r
 Route::post('register', [AuthController::class, 'register']);
 
 // Protected Routes
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::middleware(['auth'])->get('/home', [HomeController::class, 'dashboard'])->name('dashboard');
 
 // Card Routes
 Route::middleware(['auth'])->group(function () {
@@ -38,4 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cards/create', [CardController::class, 'create'])->name('cards.create');
     Route::post('/cards', [CardController::class, 'store'])->name('cards.store');
     Route::delete('/cards/{card}', [CardController::class, 'destroy'])->name('cards.destroy');
+    
+    // Карточки: управление статусом
+    Route::post('/cards/{card}/approve', [CardController::class, 'approve'])->name('cards.approve');
+    Route::post('/cards/{card}/reject', [CardController::class, 'reject'])->name('cards.reject');
 });

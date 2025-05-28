@@ -69,4 +69,43 @@ class CardController extends Controller
         $card->delete();
         return redirect()->route('cards.index')->with('success', 'Карточка успешно удалена.');
     }
+    
+    /**
+     * Approve a card.
+     */
+    public function approve(Card $card)
+    {
+        // Проверка прав (в реальном приложении здесь нужна более сложная проверка)
+        // Для демонстрации просто проверяем, является ли пользователь владельцем карточки
+        if ($card->user_id !== Auth::id()) {
+            return redirect()->route('cards.index')->with('error', 'У вас нет прав на выполнение этого действия.');
+        }
+        
+        $card->status = 'approved';
+        $card->save();
+        
+        return back()->with('success', 'Карточка успешно одобрена.');
+    }
+    
+    /**
+     * Reject a card.
+     */
+    public function reject(Request $request, Card $card)
+    {
+        // Проверка прав (в реальном приложении здесь нужна более сложная проверка)
+        // Для демонстрации просто проверяем, является ли пользователь владельцем карточки
+        if ($card->user_id !== Auth::id()) {
+            return redirect()->route('cards.index')->with('error', 'У вас нет прав на выполнение этого действия.');
+        }
+        
+        $request->validate([
+            'rejection_reason' => 'required|string|max:255',
+        ]);
+        
+        $card->status = 'rejected';
+        $card->rejection_reason = $request->rejection_reason;
+        $card->save();
+        
+        return back()->with('success', 'Карточка отклонена.');
+    }
 } 

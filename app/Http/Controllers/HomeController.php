@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 class HomeController extends Controller
 {
-    public function __construct()
+    public function dashboard()
     {
-        $this->middleware('auth');
+        return view('dashboard');
     }
 
     public function index()
     {
-        return view('dashboard');
+        if (Auth::check())
+            return redirect()->route('dashboard');
+        return view('home');
     }
 } 
