@@ -1,0 +1,25 @@
+{
+	"name": "Laravel Development",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bmewburn.vscode-intelephense-client",
+				"amiralizadeh9480.laravel-extra-intellisense",
+				"onecentlin.laravel-blade",
+				"onecentlin.laravel5-snippets",
+				"recca0120.vscode-phpunit",
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-mysql"
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "zsh"
+			}
+		}
+	},
+	"forwardPorts": [8000, 3306],
+	"remoteUser": "vscode",
+	"postCreateCommand": "composer install && php artisan key:generate && npm install"
+}
