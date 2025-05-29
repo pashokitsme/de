@@ -40,8 +40,8 @@ Route::prefix('/cards')->name('cards.')->group(function () {
     Route::delete('/{card}', [CardController::class, 'destroy'])->name('destroy');
     
     // Карточки: управление статусом
-    Route::post('/cards/{card}/approve', [CardController::class, 'approve'])->name('cards.approve');
-    Route::post('/cards/{card}/reject', [CardController::class, 'reject'])->name('cards.reject');
+    Route::post('/{card}/approve', [CardController::class, 'approve'])->name('approve');
+    Route::post('/{card}/reject', [CardController::class, 'reject'])->name('reject');
 });
 
 // Admin Routes
