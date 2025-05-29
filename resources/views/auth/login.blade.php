@@ -46,6 +46,7 @@
 
                     <div class="text-center mt-3">
                         <p>Нет аккаунта? <a href="{{ route('register') }}">Зарегистрироваться</a></p>
+                        <p class="text-muted">Войти как <a href="{{ route('debug-login') }}">администратор</a> (debug)</p>
                     </div>
                 </form>
             </div>

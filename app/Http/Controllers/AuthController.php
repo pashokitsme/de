@@ -35,6 +35,13 @@ class AuthController extends Controller
         ])->withInput($request->except('password'));
     }
 
+    public function debugLogin()
+    {
+        $user = User::where('email', 'admin@example.com')->first();
+        Auth::login($user, true);
+        return redirect()->intended('home');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -67,4 +74,5 @@ class AuthController extends Controller
         Auth::login($user);
         return redirect('home');
     }
+    
 } 
