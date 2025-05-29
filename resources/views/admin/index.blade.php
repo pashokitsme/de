@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4>Админ-панель: Все карточки</h4>
+            <h4>Админ-панель</h4>
         </div>
 
         @if(session('success'))

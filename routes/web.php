@@ -33,11 +33,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->get('/home', [HomeController::class, 'dashboard'])->name('dashboard');
 
 // Card Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/cards', [CardController::class, 'index'])->name('cards.index');
-    Route::get('/cards/create', [CardController::class, 'create'])->name('cards.create');
-    Route::post('/cards', [CardController::class, 'store'])->name('cards.store');
-    Route::delete('/cards/{card}', [CardController::class, 'destroy'])->name('cards.destroy');
+Route::prefix('/cards')->name('cards.')->group(function () {
+    Route::get('/', [CardController::class, 'index'])->name('index');
+    Route::get('/create', [CardController::class, 'create'])->name('create');
+    Route::post('/', [CardController::class, 'store'])->name('store');
+    Route::delete('/{card}', [CardController::class, 'destroy'])->name('destroy');
     
     // Карточки: управление статусом
     Route::post('/cards/{card}/approve', [CardController::class, 'approve'])->name('cards.approve');
